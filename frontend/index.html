@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="AquaSentinel — Automated mining site environmental damage auditing using Sentinel-2 multispectral analysis." />
+    <title>AquaSentinel | Environmental Damage Auditor</title>
+
+    <!-- Leaflet CSS -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      crossorigin=""
+    />
+
+    <!-- Tailwind CSS Play CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              slate: {
+                925: '#0d1424',
+                950: '#0a1120',
+              },
+              amber: { 450: '#ffb833' },
+            },
+            fontFamily: {
+              sans: ['Inter', 'system-ui', 'sans-serif'],
+              mono: ['JetBrains Mono', 'monospace'],
+            },
+          },
+        },
+      }
+    </script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      :root {
+        color-scheme: dark;
+      }
+      * { box-sizing: border-box; }
+      body { margin: 0; background: #0a1120; }
+
+      /* Leaflet map dark filter */
+      .leaflet-tile { filter: brightness(0.85) saturate(0.9) hue-rotate(5deg); }
+
+      /* Custom scrollbar */
+      ::-webkit-scrollbar { width: 6px; }
+      ::-webkit-scrollbar-track { background: #0d1424; }
+      ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
+
+      /* Wipe slider thumb */
+      input[type=range].wipe-slider::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        width: 18px; height: 18px;
+        background: #f59e0b;
+        border-radius: 50%;
+        cursor: ew-resize;
+        box-shadow: 0 0 12px rgba(245,158,11,0.7);
+      }
+      input[type=range].wipe-slider::-moz-range-thumb {
+        width: 18px; height: 18px;
+        background: #f59e0b;
+        border-radius: 50%;
+        cursor: ew-resize;
+        border: none;
+        box-shadow: 0 0 12px rgba(245,158,11,0.7);
+      }
+      input[type=range].wipe-slider {
+        -webkit-appearance: none;
+        background: transparent;
+        outline: none;
+        width: 100%;
+        cursor: ew-resize;
+      }
+      input[type=range].wipe-slider::-webkit-slider-runnable-track {
+        background: rgba(245,158,11,0.3);
+        border-radius: 4px; height: 4px;
+      }
+
+      /* Pulse animation for severity dot */
+      @keyframes pulse-ring {
+        0% { transform: scale(1); opacity: 1; }
+        100% { transform: scale(2.2); opacity: 0; }
+      }
+      .severity-pulse::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        border-radius: 50%;
+        background: inherit;
+        animation: pulse-ring 1.8s cubic-bezier(0.4,0,0.6,1) infinite;
+      }
+
+      /* Shimmer loading skeleton */
+      @keyframes shimmer {
+        0% { background-position: -400px 0; }
+        100% { background-position: 400px 0; }
+      }
+      .skeleton {
+        background: linear-gradient(90deg, #1e293b 25%, #334155 50%, #1e293b 75%);
+        background-size: 800px 100%;
+        animation: shimmer 1.5s infinite;
+        border-radius: 6px;
+      }
+
+      /* Fade-in transition */
+      .fade-in { animation: fadeIn 0.4s ease-out; }
+      @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+      /* Leaflet overrides for dark theme */
+      .leaflet-popup-content-wrapper, .leaflet-popup-tip { background: #1e293b; color: #cbd5e1; }
+      .leaflet-bar a { background: #1e293b; color: #f59e0b; border-color: #334155; }
+      .leaflet-bar a:hover { background: #334155; }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <!-- Leaflet JS loaded by React useEffect -->
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
