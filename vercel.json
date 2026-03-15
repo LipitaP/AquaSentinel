@@ -1,10 +1,5 @@
 {
-  "version": 3,
-  "projects": {
-    "frontend": {
-      "root": "frontend"
-    }
-  },
+  "version": 2,
   "builds": [
     {
       "src": "frontend/package.json",
