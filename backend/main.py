@@ -34,7 +34,7 @@ from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 
-from engine import MockRasterFactory, SpectralAuditor
+from backend.engine import MockRasterFactory, SpectralAuditor
 
 load_dotenv()
 logging.basicConfig(level=logging.INFO, format="%(levelname)s | %(name)s | %(message)s")
