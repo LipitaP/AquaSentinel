@@ -31,6 +31,8 @@ const SEVERITY_COLOR = (score) => {
   return              { bg: 'bg-red-500/20',     text: 'text-red-400',     ring: 'ring-red-500',     dot: '#ef4444', label: 'CRITICAL' }
 }
 
+const API_BASE = import.meta.env.VITE_API_BASE || '/api'
+
 // ──────────────────────────────────────────────────────────────────────────────
 // Utility: load external script/link once
 // ──────────────────────────────────────────────────────────────────────────────
@@ -306,7 +308,7 @@ export default function App() {
 
   // ── Fetch hotspots on mount ──
   useEffect(() => {
-    fetch('/api/hotspots')
+    fetch(`${API_BASE}/hotspots`)
       .then(r => r.json())
       .then(d => setHotspots(d.hotspots || []))
       .catch(() => setHotspots([]))
@@ -319,10 +321,12 @@ export default function App() {
     setReport(null)
 
     try {
-      const res = await fetch(`/api/audit?query=${encodeURIComponent(query)}`)
+      const res = await fetch(`${API_BASE}/audit?query=${encodeURIComponent(query)}`)
       if (!res.ok) {
-        const err = await res.json()
-        throw new Error(err.detail || 'Audit failed')
+        const text = await res.text()
+        let detail = 'Audit failed'
+        try { detail = JSON.parse(text)?.detail || text } catch { detail = text }
+        throw new Error(detail || 'Audit failed')
       }
       const data = await res.json()
       setReport(data)

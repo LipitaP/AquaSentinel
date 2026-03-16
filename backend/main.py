@@ -130,7 +130,7 @@ app = FastAPI(
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[FRONTEND_URL],
+    allow_origins=["*"] if os.getenv("ALLOW_ALL_ORIGINS", "1") == "1" else [FRONTEND_URL],
     allow_methods=["GET", "POST", "OPTIONS"],
     allow_headers=["*"],
     allow_credentials=True,
